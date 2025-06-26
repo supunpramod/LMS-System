@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Courses from "./pages/Courses";
+import FooterSection from "./components/FooterSection";
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
           
         </Routes>
       </div>
+      <FooterSection/>
+
     </BrowserRouter>
   );
 }
