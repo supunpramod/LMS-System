@@ -2,10 +2,40 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const FooterSection = () => {
-  // Scroll to top function
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  // === Dynamic Calendar ===
+  const generateCalendar = (year, month) => {
+    const daysInMonth = new Date(year, month + 1, 0).getDate(); // Number of days in the month
+    const startDay = new Date(year, month, 1).getDay(); // Day of week (0 = Sunday)
+
+    const calendar = [];
+    let dayCount = 1;
+
+    // Fill up to 6 rows (weeks)
+    for (let week = 0; week < 6; week++) {
+      const row = [];
+      for (let day = 0; day < 7; day++) {
+        const isFirstWeek = week === 0;
+        const isBeforeStart = day < ((startDay + 6) % 7); // Adjust because our week starts on Monday
+
+        if (isFirstWeek && isBeforeStart) {
+          row.push(null); // Empty cell
+        } else if (dayCount > daysInMonth) {
+          row.push(null); // After month's end
+        } else {
+          row.push(dayCount++);
+        }
+      }
+      calendar.push(row);
+    }
+
+    return calendar;
+  };
+
+  const calendarData = generateCalendar(2025, 5); // June = month index 5
 
   return (
     <div className="bg-[#353b42] text-white pt-12 pb-4 flex flex-col justify-between relative">
@@ -43,24 +73,22 @@ const FooterSection = () => {
               <div>Sat</div>
               <div>Sun</div>
             </div>
-            <div className="grid grid-cols-7 gap-1 text-center text-gray-300 text-sm">
-              <div></div>
-              <div></div>
-              <div></div>
-              <div></div>
-              <div></div>
-              <div className="bg-green-200 text-gray-900 rounded">7</div>
-              <div>8</div>
-            </div>
-            <div className="grid grid-cols-7 gap-1 text-center text-gray-300 text-sm">
-              <div>9</div>
-              <div className="bg-green-200 text-gray-900 rounded">10</div>
-              <div>11</div>
-              <div>12</div>
-              <div>13</div>
-              <div>14</div>
-              <div>15</div>
-            </div>
+
+            {/* Render calendar rows */}
+            {calendarData.map((week, i) => (
+              <div key={i} className="grid grid-cols-7 gap-1 text-center text-gray-300 text-sm">
+                {week.map((day, j) => (
+                  <div
+                    key={j}
+                    className={`${
+                      day ? "py-1 rounded" : ""
+                    } ${day === 7 || day === 10 ? "bg-green-200 text-gray-900" : ""}`}
+                  >
+                    {day || ""}
+                  </div>
+                ))}
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -82,7 +110,6 @@ const FooterSection = () => {
           <span>+94 11 754 4801</span>
         </div>
         <div className="flex space-x-2 mt-2 md:mt-0">
-          {/* Replace with actual icons or use react-icons */}
           <span className="bg-gray-700 p-2 rounded">
             <i className="fab fa-facebook-f"></i>
           </span>
