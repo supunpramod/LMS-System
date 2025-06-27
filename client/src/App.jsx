@@ -15,13 +15,15 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/courses" element={<Courses/>}/>
+          <Route path="/courses/all" element={<Courses/>}/>
           
         </Routes>
       </div>
       <FooterSection/>
+      
 
     </BrowserRouter>
+    
   );
 }
 
