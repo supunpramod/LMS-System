@@ -22,7 +22,7 @@ function LayoutWrapper() {
   }
 
   return (
-    <>
+    <div>
       <Navbar />
       <div className="container mx-auto mt-8">
         <Routes>
@@ -33,7 +33,7 @@ function LayoutWrapper() {
         </Routes>
       </div>
       <FooterSection />
-    </>
+    </div>
   );
 }
 
