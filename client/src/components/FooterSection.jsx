@@ -38,7 +38,7 @@ const FooterSection = () => {
   const calendarData = generateCalendar(2025, 5); // June = month index 5
 
   return (
-    <div className="bg-[#353b42] text-white pt-12 pb-4 flex flex-col justify-between relative">
+    <div className="bg-blue-700 text-white pt-12 pb-4 flex flex-col justify-between relative">
       {/* Support Section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center px-8">
         <div>
@@ -47,15 +47,15 @@ const FooterSection = () => {
           <div className="flex items-center mb-1">
             <span className="mr-2 text-yellow-400">&#x1F310;</span>
             <a href="mailto:support.sliit.lk" className="text-yellow-400 underline">
-              support.sliit.lk
+              support.lms.lk
             </a>
           </div>
           <div className="flex items-center mb-3">
             <span className="mr-2">&#x1F4DE;</span>
-            <span>+94 11 754 4801</span>
+            <span>+94 77 962 6046</span>
           </div>
           <button className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-6 py-2 rounded transition">
-            Provide Feedback to SLIIT
+            Provide Feedback to LMS
           </button>
         </div>
 
@@ -96,18 +96,18 @@ const FooterSection = () => {
       {/* Footer Bottom */}
       <div className="border-t border-gray-600 mt-12 pt-4 flex flex-col md:flex-row justify-between items-center px-8">
         <div className="text-gray-400 text-xs mb-2 md:mb-0">
-          Copyright 2022 © SLIIT. All Rights Reserved.
+          Copyright 2022 © LMS. All Rights Reserved.
         </div>
         <div className="flex items-center text-yellow-400 text-sm space-x-4">
           <a href="https://www.sliit.lk" className="hover:underline">
-            https://www.sliit.lk
+            https://www.lms.lk
           </a>
           <span>|</span>
           <a href="mailto:info@sliit.lk" className="hover:underline">
-            info@sliit.lk
+            info@lms.lk
           </a>
           <span>|</span>
-          <span>+94 11 754 4801</span>
+          <span>+94 77 962 6046</span>
         </div>
         <div className="flex space-x-2 mt-2 md:mt-0">
           <span className="bg-gray-700 p-2 rounded">

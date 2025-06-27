@@ -62,18 +62,15 @@ export default function Home() {
         {/* Right Side */}
         <div className="md:w-1/2 text-gray-800 text-base md:text-lg leading-relaxed space-y-4 bg-white/80 p-6 rounded shadow">
           <p>
-            We are a leading non-state higher education institute approved by
-            the University Grants Commission (UGC) under the Universities Act.
+           Approved by the University Grants Commission (UGC) under the Universities Act, with memberships in the Association of Commonwealth Universities (ACU) and the International Association of Universities (IAU), ensuring international credibility and academic excellence.
+
           </p>
           <p>
-            We are members of the Association of Commonwealth Universities
-            (ACU), as well as the International Association of Universities
-            (IAU).
+            The first Sri Lankan institute to receive accreditation from both the Institution of Engineering and Technology (IET), UK and the Engineering Council, UK—signifying world-class standards in engineering education.
+
           </p>
           <p>
-            We are also the first Sri Lankan institute to be accredited by the
-            Institute of Engineering & Technology (IET), UK and Engineering
-            Council, UK.
+            Membership in ACU and IAU connects the institute to a global network of higher education, fostering research partnerships, academic exchange, and worldwide exposure for students and faculty alike.
           </p>
         </div>
       </div>
