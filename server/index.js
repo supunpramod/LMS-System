@@ -51,7 +51,7 @@ const courseSchema = new mongoose.Schema({
 
 const Course = mongoose.model('Course', courseSchema);
 
-// Routes
+// User routes
 app.use('/api/users', userRoutes);
 
 // POST course with file upload
@@ -91,6 +91,32 @@ app.get('/api/courses/:id', async (req, res) => {
     if (!course) return res.status(404).json({ error: 'Course not found' });
     res.json(course);
   } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// DELETE course by ID with file removal
+app.delete('/api/courses/:id', async (req, res) => {
+  try {
+    const course = await Course.findById(req.params.id);
+    if (!course) return res.status(404).json({ error: 'Course not found' });
+
+    // Delete files from disk
+    if (course.files && course.files.length > 0) {
+      for (const file of course.files) {
+        const filePath = path.join(__dirname, file.url);
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+        }
+      }
+    }
+
+    // Delete course from database
+    await Course.findByIdAndDelete(req.params.id);
+
+    res.status(204).end(); // No Content
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ error: err.message });
   }
 });
