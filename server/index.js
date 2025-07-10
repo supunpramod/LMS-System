@@ -121,6 +121,36 @@ app.delete('/api/courses/:id', async (req, res) => {
   }
 });
 
+
+
+app.put('/api/courses/:id', upload.array('files'), async (req, res) => {
+  try {
+    const { title, description, instructor } = req.body;
+    const newFiles = req.files?.map(file => ({
+      url: `/uploads/${file.filename}`,
+      name: file.originalname,
+      type: file.mimetype
+    })) || [];
+
+    const course = await Course.findById(req.params.id);
+    if (!course) return res.status(404).json({ error: "Course not found" });
+
+    course.title = title;
+    course.description = description;
+    course.instructor = instructor;
+    if (newFiles.length > 0) {
+      course.files.push(...newFiles); // append new files
+    }
+
+    await course.save();
+    res.json(course);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 // Start server after DB connected
 const PORT = process.env.PORT || 5000;
 mongoose.connect(process.env.MONGO_URI)

@@ -1,22 +1,16 @@
 import { useState } from "react";
 import axios from "axios";
 
-export default function CourseForm({ onCourseAdded }) {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [instructor, setInstructor] = useState("");
-  const [files, setFiles] = useState([]);
+export default function CourseForm({ onCourseAdded, course, isEdit = false, onSuccess, onCancel }) {
+  const [title, setTitle] = useState(course?.title || "");
+  const [description, setDescription] = useState(course?.description || "");
+  const [instructor, setInstructor] = useState(course?.instructor || "");
+  const [files, setFiles] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const handleFileChange = (e) => {
-    setFiles([...e.target.files]);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
 
     try {
       const formData = new FormData();
@@ -24,37 +18,80 @@ export default function CourseForm({ onCourseAdded }) {
       formData.append("description", description);
       formData.append("instructor", instructor);
 
-      files.forEach(file => {
-        formData.append("files", file);
-      });
+      if (files) {
+        for (const file of files) {
+          formData.append("files", file);
+        }
+      }
 
-      const response = await axios.post("http://localhost:5000/api/courses", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      if (isEdit) {
+        await axios.put(`http://localhost:5000/api/courses/${course._id}`, formData);
+        onSuccess?.();
+      } else {
+        await axios.post("http://localhost:5000/api/courses", formData);
+        onCourseAdded();
+      }
 
       setTitle("");
       setDescription("");
       setInstructor("");
-      setFiles([]);
-
-      if (onCourseAdded) onCourseAdded(response.data);
+      setFiles(null);
     } catch (err) {
-      setError(err.response?.data?.error || "Upload failed");
+      alert("Error submitting form");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 bg-white rounded shadow-md">
-      {error && <div className="text-red-600 mb-2">{error}</div>}
-      <input type="text" value={title} onChange={e => setTitle(e.target.value)} placeholder="Title" required className="mb-2 p-2 border rounded w-full" />
-      <textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="Description" required className="mb-2 p-2 border rounded w-full" />
-      <input type="text" value={instructor} onChange={e => setInstructor(e.target.value)} placeholder="Instructor" required className="mb-2 p-2 border rounded w-full" />
-      <input type="file" multiple onChange={handleFileChange} className="mb-4" />
-      <button type="submit" disabled={loading} className="bg-blue-600 text-white py-2 px-4 rounded">
-        {loading ? "Uploading..." : "Add Course"}
-      </button>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <input
+        type="text"
+        placeholder="Title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        required
+        className="w-full border p-2 rounded"
+      />
+      <textarea
+        placeholder="Description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        required
+        className="w-full border p-2 rounded"
+      />
+      <input
+        type="text"
+        placeholder="Instructor"
+        value={instructor}
+        onChange={(e) => setInstructor(e.target.value)}
+        required
+        className="w-full border p-2 rounded"
+      />
+      <input
+        type="file"
+        multiple
+        onChange={(e) => setFiles(e.target.files)}
+        className="w-full"
+      />
+      <div className="flex gap-2">
+        <button
+          type="submit"
+          disabled={loading}
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        >
+          {loading ? "Saving..." : isEdit ? "Update" : "Add"}
+        </button>
+        {isEdit && (
+          <button
+            type="button"
+            onClick={onCancel}
+            className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+          >
+            Cancel
+          </button>
+        )}
+      </div>
     </form>
   );
 }
